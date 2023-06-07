@@ -3,12 +3,15 @@ import "./components/bootstrap";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Counter from "./components/Counter";
+import Logo from "../images/test.png";
 
 function App() {
     return (
         <>
             <h1>Hello World</h1>
+            <img src={Logo}/>
             <Counter />
+            
         </>
     );
 }
