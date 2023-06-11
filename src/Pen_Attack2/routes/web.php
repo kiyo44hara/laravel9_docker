@@ -29,6 +29,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// 通常ユーザー
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -36,3 +37,17 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// 管理者
+Route::prefix('admin')->name('admin.')->group(function(){
+
+    Route::get('/dashboard', function () {
+        return Inertia::render('Admin/Dashboard');
+    })->middleware(['auth:admin', 'verified'])->name('dashboard');
+
+    require __DIR__.'/admin.php';
+});
+
+
+
+
