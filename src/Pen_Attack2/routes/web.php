@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PostController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,12 +32,13 @@ Route::get('/dashboard', function () {
 
 // 通常ユーザー
 Route::middleware('auth')->group(function () {
+    // ログイン機能
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+
 
 // 管理者
 Route::prefix('admin')->name('admin.')->group(function(){
@@ -46,8 +48,15 @@ Route::prefix('admin')->name('admin.')->group(function(){
     })->middleware(['auth:admin', 'verified'])->name('dashboard');
 
     require __DIR__.'/admin.php';
+
+    // 投稿機能
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+    Route::put('/posts/{id}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 });
 
-
+require __DIR__.'/auth.php';
 
 
